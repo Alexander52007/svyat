@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        {{ title }}
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Вид животного</label>
+                {{ form.species }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Порода (оставьте пустым, если нет)</label>
+                {{ form.breed }}
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Возраст (месяцев)</label>
+                        {{ form.age_months }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Пол</label>
+                        {{ form.gender }}
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Цена (₽)</label>
+                {{ form.price }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Фото (опционально)</label>
+                {{ form.image }}
+            </div>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+            <a href="{% url 'animal_list' %}" class="btn btn-secondary">Отмена</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

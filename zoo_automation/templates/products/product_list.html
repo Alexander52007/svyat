@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block page_title %}Товары в наличии{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+    <span>📦 Товары (всего: {{ products|length }})</span>
+    <a href="{% url 'product_create' %}" class="btn btn-primary btn-sm">
+        <i class="bi bi-plus"></i> Добавить товар
+    </a>
+    </div>
+    <div class="card-body">
+        {% if products %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+    <tr>
+        <th>Название</th>
+        <th>Категория</th>
+        <th>Цена</th>
+        <th>Остаток</th>
+        <th>Действия</th>
+    </tr>
+</thead>
+<tbody>
+    {% for p in products %}
+    <tr>
+        <td><strong>{{ p.name }}</strong></td>
+        <td>{{ p.category.name }}</td>
+        <td>{{ p.price }} ₽</td>
+        <td>
+            <span class="badge {% if p.stock < 5 %}bg-danger{% else %}bg-success{% endif %}">
+                {{ p.stock }} шт
+            </span>
+        </td>
+        <td>
+            <a href="{% url 'product_update' p.pk %}" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-pencil"></i>
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+                <tbody>
+                    {% for p in products %}
+                    <tr>
+                        <td><strong>{{ p.name }}</strong></td>
+                        <td>{{ p.category.name }}</td>
+                        <td>{{ p.price }} ₽</td>
+                        <td>
+                            <span class="badge {% if p.stock < 5 %}bg-danger{% else %}bg-success{% endif %}">
+                                {{ p.stock }} шт
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted">Нет товаров в базе.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

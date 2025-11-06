@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block page_title %}Животные в наличии{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+    <span>🐾 Животные (всего: {{ animals|length }})</span>
+    <a href="{% url 'animal_create' %}" class="btn btn-primary btn-sm">
+        <i class="bi bi-plus"></i> Добавить животное
+    </a>
+</div>
+    <div class="card-body">
+        {% if animals %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+    <tr>
+        <th>Вид</th>
+        <th>Порода</th>
+        <th>Возраст</th>
+        <th>Пол</th>
+        <th>Цена</th>
+        <th>Действия</th>
+    </tr>
+</thead>
+<tbody>
+    {% for a in animals %}
+    <tr>
+        <td>{{ a.get_species_display }}</td>
+        <td>{{ a.breed|default:"—" }}</td>
+        <td>{{ a.age_months }} мес</td>
+        <td>
+            {% if a.gender == 'M' %}
+                <span class="text-primary">♂ Самец</span>
+            {% else %}
+                <span class="text-danger">♀ Самка</span>
+            {% endif %}
+        </td>
+        <td><strong>{{ a.price }} ₽</strong></td>
+        <td>
+            <a href="{% url 'animal_update' a.pk %}" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-pencil"></i>
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+                <tbody>
+                    {% for a in animals %}
+                    <tr>
+                        <td>{{ a.get_species_display }}</td>
+                        <td>{{ a.breed|default:"—" }}</td>
+                        <td>{{ a.age_months }} мес</td>
+                        <td>
+                            {% if a.gender == 'M' %}
+                                <span class="text-primary">♂ Самец</span>
+                            {% else %}
+                                <span class="text-danger">♀ Самка</span>
+                            {% endif %}
+                        </td>
+                        <td><strong>{{ a.price }} ₽</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted">Нет животных в наличии.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

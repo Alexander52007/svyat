@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block page_title %}Новая продажа{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        ➕ Оформление новой продажи
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+
+            <h5 class="mt-3">📦 Товары</h5>
+            {% if products %}
+                <div class="row">
+                {% for p in products %}
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ p.name }}</h6>
+                                <p class="text-muted small">{{ p.category.name }}</p>
+                                <p><strong>{{ p.price }} ₽</strong></p>
+                                <p class="text-muted">Остаток: {{ p.stock }} шт</p>
+                                <input type="number"
+                                       name="quantity"
+                                       min="0"
+                                       max="{{ p.stock }}"
+                                       value="0"
+                                       class="form-control form-control-sm"
+                                       style="width: 100px;">
+                                <input type="hidden" name="product_id" value="{{ p.id }}">
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted">Нет товаров в наличии.</p>
+            {% endif %}
+
+            <h5 class="mt-4">🐾 Животные</h5>
+            {% if animals %}
+                <div class="row">
+                {% for a in animals %}
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ a.get_species_display }}</h6>
+                                <p class="text-muted small">{{ a.breed|default:"Без породы" }}</p>
+                                <p><strong>{{ a.price }} ₽</strong></p>
+                                <p class="small">
+                                    Возраст: {{ a.age_months }} мес •
+                                    Пол: {{ a.get_gender_display }}
+                                </p>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="animal_id" value="{{ a.id }}" id="animal_{{ a.id }}">
+                                    <label class="form-check-label" for="animal_{{ a.id }}">
+                                        Продать этого питомца
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted">Нет животных в наличии.</p>
+            {% endif %}
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">✅ Оформить продажу</button>
+                <a href="{% url 'sale_list' %}" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

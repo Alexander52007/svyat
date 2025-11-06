@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block page_title %}История продаж{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>💰 Продажи (всего: {{ sales|length }})</span>
+        <a href="{% url 'sale_create' %}" class="btn btn-primary btn-sm">➕ Новая продажа</a>
+    </div>
+    <div class="card-body">
+        {% if sales %}
+            {% for sale in sales %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="card-title mb-1">Продажа #{{ sale.id }}</h6>
+                        <small class="text-muted">{{ sale.date|date:"d.m.Y H:i" }}</small>
+                    </div>
+                    <p class="mb-1"><strong>Итого:</strong> {{ sale.total_amount }} ₽</p>
+                    <ul class="mb-0">
+                        {% for item in sale.items.all %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+        <p class="text-muted">Продаж пока нет.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
